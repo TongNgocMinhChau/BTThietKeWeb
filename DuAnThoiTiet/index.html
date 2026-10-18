@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#26372e">
+    <title>Weather Planner | Đà Lạt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+  </head>
+  <body>
+    <div class="page-wrap">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Weather Planner, về đầu trang">
+          <span class="brand-mark" aria-hidden="true">W</span>
+          <span>weather<span class="brand-light">planner</span></span>
+        </a>
+        <div class="trip-date">
+          <span class="date-dot" aria-hidden="true"></span>
+          <span>KẾ HOẠCH CUỐI TUẦN</span>
+          <span class="date-divider" aria-hidden="true"></span>
+          <span>ĐÀ LẠT, VIỆT NAM</span>
+        </div>
+        <a class="top-link" href="#itinerary">Lịch trình <span aria-hidden="true">↗</span></a>
+      </header>
+
+      <main class="planner-grid" id="top">
+        <section class="weather-panel" aria-labelledby="weather-title">
+          <div class="weather-panel-top">
+            <div>
+              <p class="eyebrow" id="weather-date">ĐANG LẤY DỮ LIỆU</p>
+              <h1 id="weather-title">Đà Lạt</h1>
+              <p class="location-line"><span aria-hidden="true">⌖</span> <span id="location-name">Lâm Đồng, Việt Nam</span></p>
+              <label class="city-picker">
+                <span class="sr-only">Chọn thành phố</span>
+                <select id="city-select" aria-label="Chọn thành phố">
+                  <option value="da-lat" selected>Đà Lạt</option>
+                  <option value="ha-noi">Hà Nội</option>
+                  <option value="da-nang">Đà Nẵng</option>
+                </select>
+              </label>
+            </div>
+            <span class="live-label"><span aria-hidden="true"></span> <span id="weather-status" role="status">ĐANG TẢI</span></span>
+          </div>
+
+          <div class="current-weather">
+            <div class="temperature-block">
+              <p class="temperature"><span id="temperature-value">--</span><span class="degree-symbol">°</span></p>
+              <p class="weather-condition" id="weather-condition">Đang tải...</p>
+              <p class="feels-like">Cảm giác như <span id="feels-like-value">--</span>°</p>
+            </div>
+            <div class="sun-icon" id="weather-icon" aria-label="Đang tải tình trạng thời tiết" role="img">
+              <span class="sun-core"></span>
+              <span class="sun-ray ray-one"></span>
+              <span class="sun-ray ray-two"></span>
+              <span class="sun-ray ray-three"></span>
+              <span class="sun-ray ray-four"></span>
+              <span class="sun-ray ray-five"></span>
+              <span class="sun-ray ray-six"></span>
+              <span class="sun-ray ray-seven"></span>
+              <span class="sun-ray ray-eight"></span>
+            </div>
+          </div>
+
+          <div class="weather-rule"></div>
+          <div class="weather-stats">
+            <div class="weather-stat">
+              <span class="stat-icon humidity-icon" aria-hidden="true">◌</span>
+              <span class="stat-copy"><span class="stat-label">Độ ẩm</span><strong><span id="humidity-value">--</span><span>%</span></strong></span>
+            </div>
+            <div class="weather-stat">
+              <span class="stat-icon wind-icon" aria-hidden="true">⌁</span>
+              <span class="stat-copy"><span class="stat-label">Gió</span><strong><span id="wind-value">--</span> <span>km/h</span></strong></span>
+            </div>
+            <div class="weather-stat">
+              <span class="stat-icon rain-icon" aria-hidden="true">◒</span>
+              <span class="stat-copy"><span class="stat-label">Khả năng mưa</span><strong><span id="rain-value">--</span><span>%</span></strong></span>
+            </div>
+          </div>
+
+          <div class="weather-note">
+            <span class="note-spark" aria-hidden="true">✳</span>
+            <div class="note-copy">
+              <p id="weather-advice">Đang tải thời tiết hiện tại...</p>
+              <a class="weather-source" href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Dữ liệu: Open-Meteo</a>
+            </div>
+          </div>
+
+          <div class="sunset-line">
+            <span>🌤 <span>Hoàng hôn</span></span>
+            <strong id="sunset-value">--:--</strong>
+          </div>
+        </section>
+
+        <section class="itinerary-section" id="itinerary" aria-labelledby="itinerary-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">ĐI ĐÂU HÔM NAY?</p>
+              <h2 id="itinerary-title">Lịch trình <span>của bạn</span></h2>
+              <p class="section-description">Một ngày thong thả giữa cao nguyên.</p>
+            </div>
+            <span class="destination-count" id="destination-count" aria-live="polite">12 địa điểm</span>
+          </div>
+
+          <div class="itinerary-tabs" role="tablist" aria-label="Danh sách điểm đến">
+            <button class="itinerary-tab" id="planned-tab" type="button" role="tab" aria-selected="true" aria-controls="destination-list">
+              Lịch trình <span class="itinerary-tab-count" id="planned-count">12</span>
+            </button>
+            <button class="itinerary-tab" id="visited-tab" type="button" role="tab" aria-selected="false" aria-controls="destination-list" tabindex="-1">
+              Đã đến <span class="itinerary-tab-count" id="visited-count">0</span>
+            </button>
+          </div>
+
+          <div class="list-controls" aria-label="Tùy chọn danh sách địa điểm">
+            <label class="search-control">
+              <span class="sr-only">Tìm địa điểm</span>
+              <span class="search-icon" aria-hidden="true"></span>
+              <input id="destination-search" type="search" placeholder="Tìm địa điểm..." autocomplete="off">
+            </label>
+            <label class="select-control">
+              <span class="sr-only">Lọc theo loại địa điểm</span>
+              <select id="category-filter">
+                <option value="all">Tất cả loại</option>
+                <option value="nature">Thiên nhiên</option>
+                <option value="culture">Văn hóa</option>
+                <option value="food">Ẩm thực</option>
+              </select>
+            </label>
+            <label class="select-control sort-control">
+              <span class="sr-only">Sắp xếp theo tên</span>
+              <select id="title-sort">
+                <option value="asc">Tên A–Z</option>
+                <option value="desc">Tên Z–A</option>
+              </select>
+            </label>
+          </div>
+
+          <form class="add-destination-form" id="add-destination-form">
+            <label class="form-field destination-name-field">
+              <span>Tên địa điểm</span>
+              <input id="new-destination-name" name="name" type="text" maxlength="80" placeholder="Ví dụ: Thác Giang Điền" required>
+            </label>
+            <label class="form-field">
+              <span>Thời gian</span>
+              <input id="new-destination-time" name="time" type="time" value="09:00" required>
+            </label>
+            <button class="add-destination-button" type="submit"><span aria-hidden="true">+</span> Thêm</button>
+          </form>
+          <p class="sr-only" id="add-destination-feedback" role="status" aria-live="polite"></p>
+
+          <ol class="destination-list" id="destination-list" aria-live="polite" aria-busy="false"></ol>
+
+          <div class="list-footer">
+            <label class="page-size-control">
+              <span>Hiển thị</span>
+              <select id="page-size" aria-label="Số địa điểm trên mỗi trang">
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="all">Tất cả</option>
+              </select>
+              <span>mục</span>
+            </label>
+            <span class="result-range" id="result-range" aria-live="polite"></span>
+            <nav class="pagination" aria-label="Phân trang địa điểm">
+              <button class="page-arrow" id="previous-page" type="button" aria-label="Trang trước" disabled>‹</button>
+              <div class="page-numbers" id="page-numbers"></div>
+              <button class="page-arrow" id="next-page" type="button" aria-label="Trang sau">›</button>
+            </nav>
+          </div>
+        </section>
+      </main>
+
+      <footer class="page-footer">
+        <span>WEATHER PLANNER</span>
+        <span>DÀNH THỜI GIAN CHO NHỮNG CHUYẾN ĐI ĐẸP</span>
+      </footer>
+    </div>
+  </body>
+</html>
