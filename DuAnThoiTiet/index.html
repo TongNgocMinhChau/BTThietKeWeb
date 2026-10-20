@@ -22,7 +22,7 @@
           <span class="date-dot" aria-hidden="true"></span>
           <span>KẾ HOẠCH CUỐI TUẦN</span>
           <span class="date-divider" aria-hidden="true"></span>
-          <span>ĐÀ LẠT, VIỆT NAM</span>
+          <span id="trip-city-name">ĐÀ LẠT, VIỆT NAM</span>
         </div>
         <a class="top-link" href="#itinerary">Lịch trình <span aria-hidden="true">↗</span></a>
       </header>
@@ -35,7 +35,7 @@
               <h1 id="weather-title">Đà Lạt</h1>
               <p class="location-line"><span aria-hidden="true">⌖</span> <span id="location-name">Lâm Đồng, Việt Nam</span></p>
               <label class="city-picker">
-                <span class="sr-only">Chọn thành phố</span>
+                <span class="city-picker-label">ĐIỂM ĐẾN CỦA BẠN</span>
                 <select id="city-select" aria-label="Chọn thành phố">
                   <option value="da-lat" selected>Đà Lạt</option>
                   <option value="ha-noi">Hà Nội</option>
@@ -100,7 +100,7 @@
             <div>
               <p class="eyebrow">ĐI ĐÂU HÔM NAY?</p>
               <h2 id="itinerary-title">Lịch trình <span>của bạn</span></h2>
-              <p class="section-description">Một ngày thong thả giữa cao nguyên.</p>
+              <p class="section-description" id="itinerary-description">Một ngày thong thả giữa cao nguyên.</p>
             </div>
             <span class="destination-count" id="destination-count" aria-live="polite">12 địa điểm</span>
           </div>
@@ -130,8 +130,9 @@
               </select>
             </label>
             <label class="select-control sort-control">
-              <span class="sr-only">Sắp xếp theo tên</span>
+              <span class="sr-only">Sắp xếp lịch trình</span>
               <select id="title-sort">
+                <option value="time" selected>Theo thời gian</option>
                 <option value="asc">Tên A–Z</option>
                 <option value="desc">Tên Z–A</option>
               </select>

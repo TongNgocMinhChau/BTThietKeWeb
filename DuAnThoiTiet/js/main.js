@@ -53,6 +53,8 @@ const rainValue = document.querySelector('#rain-value');
 const sunsetValue = document.querySelector('#sunset-value');
 const weatherIcon = document.querySelector('#weather-icon');
 const weatherAdvice = document.querySelector('#weather-advice');
+const tripCityName = document.querySelector('#trip-city-name');
+const itineraryDescription = document.querySelector('#itinerary-description');
 
 const destinations = [
   {
@@ -165,6 +167,225 @@ const destinations = [
   }
 ];
 
+const cityRecommendations = {
+  'ha-noi': [
+    ['Hồ Hoàn Kiếm', 'nature', 'Dạo quanh hồ và ngắm Tháp Rùa'],
+    ['Văn Miếu - Quốc Tử Giám', 'culture', 'Khám phá di tích và không gian văn hóa'],
+    ['Phố cổ Hà Nội', 'food', 'Thưởng thức món ngon phố cổ']
+  ],
+  'ho-chi-minh': [
+    ['Dinh Độc Lập', 'culture', 'Tham quan di tích lịch sử giữa trung tâm'],
+    ['Bưu điện Thành phố', 'culture', 'Ngắm kiến trúc cổ Sài Gòn'],
+    ['Chợ Bến Thành', 'food', 'Dạo chợ và thưởng thức đặc sản']
+  ],
+  'hai-phong': [
+    ['Đảo Cát Bà', 'nature', 'Khám phá biển và vịnh Lan Hạ'],
+    ['Bãi biển Đồ Sơn', 'nature', 'Thư giãn bên bờ biển'],
+    ['Nhà hát lớn Hải Phòng', 'culture', 'Dạo quanh công trình biểu tượng thành phố']
+  ],
+  'da-nang': [
+    ['Bãi biển Mỹ Khê', 'nature', 'Tản bộ bên bờ biển nổi tiếng'],
+    ['Ngũ Hành Sơn', 'nature', 'Tham quan núi đá và các hang động'],
+    ['Cầu Rồng', 'culture', 'Ngắm biểu tượng bên sông Hàn']
+  ],
+  'can-tho': [
+    ['Chợ nổi Cái Răng', 'culture', 'Thức sớm khám phá chợ trên sông'],
+    ['Bến Ninh Kiều', 'nature', 'Tản bộ bên bờ sông Hậu'],
+    ['Nhà cổ Bình Thủy', 'culture', 'Tham quan ngôi nhà cổ miền Tây']
+  ],
+  'hue': [
+    ['Đại Nội Huế', 'culture', 'Khám phá kinh thành và hoàng cung'],
+    ['Chùa Thiên Mụ', 'culture', 'Ghé thăm ngôi chùa bên sông Hương'],
+    ['Chợ Đông Ba', 'food', 'Thưởng thức đặc sản cố đô']
+  ],
+  'nha-trang': [
+    ['Bãi biển Nha Trang', 'nature', 'Dạo biển và ngắm vịnh'],
+    ['Tháp Bà Ponagar', 'culture', 'Tìm hiểu kiến trúc Chăm cổ'],
+    ['Hòn Chồng', 'nature', 'Ngắm cảnh biển từ ghềnh đá']
+  ],
+  'vung-tau': [
+    ['Ngọn Hải đăng Vũng Tàu', 'culture', 'Ngắm toàn cảnh thành phố từ trên cao'],
+    ['Bãi Sau', 'nature', 'Thư giãn bên bờ biển'],
+    ['Tượng Chúa Kitô Vua', 'culture', 'Chinh phục điểm ngắm cảnh nổi tiếng']
+  ],
+  'quy-nhon': [
+    ['Eo Gió', 'nature', 'Đi bộ trên cung đường ven biển'],
+    ['Kỳ Co', 'nature', 'Khám phá bãi biển xanh trong'],
+    ['Tháp Đôi', 'culture', 'Tham quan dấu tích kiến trúc Chăm']
+  ],
+  'buon-ma-thuot': [
+    ['Bảo tàng Thế giới Cà phê', 'culture', 'Tìm hiểu văn hóa cà phê Tây Nguyên'],
+    ['Thác Dray Nur', 'nature', 'Ngắm dòng thác giữa núi rừng'],
+    ['Buôn Akô Dhông', 'culture', 'Dạo buôn làng Ê Đê truyền thống']
+  ],
+  'pleiku': [
+    ['Biển Hồ T’Nưng', 'nature', 'Ngắm hồ nước giữa cao nguyên'],
+    ['Chùa Minh Thành', 'culture', 'Tham quan ngôi chùa có kiến trúc đặc sắc'],
+    ['Núi lửa Chư Đăng Ya', 'nature', 'Khám phá cảnh sắc núi lửa và đồng cỏ']
+  ],
+  'kon-tum': [
+    ['Nhà thờ Gỗ Kon Tum', 'culture', 'Ngắm kiến trúc gỗ đặc trưng Tây Nguyên'],
+    ['Cầu treo Kon Klor', 'culture', 'Dạo cầu và ngắm sông Đăk Bla'],
+    ['Tòa Giám mục Kon Tum', 'culture', 'Tham quan công trình cổ giữa phố']
+  ],
+  'phan-thiet': [
+    ['Đồi cát bay Mũi Né', 'nature', 'Ngắm đồi cát đổi màu theo nắng'],
+    ['Làng chài Mũi Né', 'culture', 'Dạo làng chài và ngắm thuyền thúng'],
+    ['Tháp Po Sah Inu', 'culture', 'Khám phá di tích Chăm cổ']
+  ],
+  'bao-loc': [
+    ['Thác Dambri', 'nature', 'Ngắm thác nước giữa rừng xanh'],
+    ['Đồi chè Bảo Lộc', 'nature', 'Dạo giữa những đồi chè cao nguyên'],
+    ['Tu viện Bát Nhã', 'culture', 'Tìm không gian yên bình giữa đồi thông']
+  ],
+  'long-xuyen': [
+    ['Chợ nổi Long Xuyên', 'culture', 'Khám phá nhịp sống trên sông'],
+    ['Khu lưu niệm Chủ tịch Tôn Đức Thắng', 'culture', 'Tìm hiểu lịch sử địa phương'],
+    ['Miếu Ông Bắc', 'culture', 'Tham quan công trình cổ trong thành phố']
+  ],
+  'rach-gia': [
+    ['Đền thờ Nguyễn Trung Trực', 'culture', 'Ghé thăm di tích lịch sử bên biển'],
+    ['Công viên văn hóa An Hòa', 'nature', 'Dạo chơi trong không gian xanh'],
+    ['Bến tàu Rạch Giá', 'nature', 'Ngắm cảnh biển và bến tàu']
+  ],
+  'soc-trang': [
+    ['Chùa Som Rong', 'culture', 'Chiêm ngưỡng ngôi chùa Khmer nổi tiếng'],
+    ['Chùa Dơi', 'culture', 'Tham quan ngôi chùa cổ giữa vườn cây'],
+    ['Chùa Đất Sét', 'culture', 'Khám phá những tác phẩm đất sét độc đáo']
+  ],
+  'ca-mau': [
+    ['Mũi Cà Mau', 'nature', 'Đặt chân đến cực Nam của Tổ quốc'],
+    ['Vườn quốc gia U Minh Hạ', 'nature', 'Khám phá rừng tràm và hệ sinh thái'],
+    ['Chợ Cà Mau', 'food', 'Thưởng thức đặc sản vùng sông nước']
+  ],
+  'my-tho': [
+    ['Chùa Vĩnh Tràng', 'culture', 'Tham quan ngôi chùa nổi tiếng miền Tây'],
+    ['Cù lao Thới Sơn', 'nature', 'Trải nghiệm miệt vườn sông nước'],
+    ['Bến tàu du lịch Mỹ Tho', 'nature', 'Ngắm cảnh sông Tiền và thuyền bè']
+  ],
+  'ben-tre': [
+    ['Cồn Phụng', 'nature', 'Khám phá cù lao giữa sông Tiền'],
+    ['Làng nghề kẹo dừa', 'food', 'Tìm hiểu đặc sản xứ dừa'],
+    ['Vườn trái cây Cái Mơn', 'nature', 'Dạo miệt vườn và thưởng thức trái cây']
+  ],
+  'tra-vinh': [
+    ['Ao Bà Om', 'nature', 'Dạo hồ cổ giữa hàng cây sao'],
+    ['Chùa Âng', 'culture', 'Tham quan ngôi chùa Khmer cổ kính'],
+    ['Bảo tàng Văn hóa Khmer', 'culture', 'Tìm hiểu văn hóa Khmer Nam Bộ']
+  ],
+  'vinh-long': [
+    ['Cù lao An Bình', 'nature', 'Trải nghiệm miệt vườn bên sông'],
+    ['Văn Thánh Miếu', 'culture', 'Tham quan di tích văn hóa lâu đời'],
+    ['Chợ Vĩnh Long', 'food', 'Khám phá ẩm thực và đặc sản địa phương']
+  ],
+  'cao-lanh': [
+    ['Khu di tích Xẻo Quýt', 'nature', 'Đi xuồng khám phá rừng tràm'],
+    ['Khu di tích Nguyễn Sinh Sắc', 'culture', 'Tìm hiểu lịch sử và văn hóa Đồng Tháp'],
+    ['Vườn quốc gia Tràm Chim', 'nature', 'Khám phá vùng đất ngập nước nổi tiếng']
+  ],
+  'chau-doc': [
+    ['Miếu Bà Chúa Xứ Núi Sam', 'culture', 'Ghé thăm điểm hành hương nổi tiếng'],
+    ['Rừng tràm Trà Sư', 'nature', 'Đi thuyền giữa rừng tràm xanh mát'],
+    ['Làng Chăm Châu Giang', 'culture', 'Tìm hiểu văn hóa và nghề dệt của người Chăm']
+  ],
+  'ha-giang': [
+    ['Đèo Mã Pì Lèng', 'nature', 'Ngắm hẻm vực và sông Nho Quế'],
+    ['Phố cổ Đồng Văn', 'culture', 'Dạo phố cổ giữa cao nguyên đá'],
+    ['Cột cờ Lũng Cú', 'culture', 'Ghé thăm điểm cực Bắc của Tổ quốc']
+  ],
+  'lao-cai': [
+    ['Nhà thờ đá Sa Pa', 'culture', 'Dạo trung tâm thị trấn vùng cao'],
+    ['Đỉnh Fansipan', 'nature', 'Ngắm biển mây từ nóc nhà Đông Dương'],
+    ['Bản Cát Cát', 'culture', 'Khám phá bản làng và ruộng bậc thang']
+  ],
+  'yen-bai': [
+    ['Ruộng bậc thang Mù Cang Chải', 'nature', 'Ngắm những thửa ruộng uốn lượn trên núi'],
+    ['Hồ Thác Bà', 'nature', 'Du ngoạn hồ nước giữa núi rừng'],
+    ['Đồi chè Suối Giàng', 'nature', 'Thăm vùng chè Shan tuyết cổ thụ']
+  ],
+  'son-la': [
+    ['Đồi chè Mộc Châu', 'nature', 'Dạo giữa những đồi chè xanh mướt'],
+    ['Thác Dải Yếm', 'nature', 'Ngắm dòng thác giữa cao nguyên'],
+    ['Nhà tù Sơn La', 'culture', 'Tìm hiểu di tích lịch sử cách mạng']
+  ],
+  'dien-bien-phu': [
+    ['Bảo tàng Chiến thắng Điện Biên Phủ', 'culture', 'Tìm hiểu chiến dịch lịch sử'],
+    ['Đồi A1', 'culture', 'Tham quan di tích chiến trường xưa'],
+    ['Hồ Pá Khoang', 'nature', 'Nghỉ chân bên hồ giữa núi rừng']
+  ],
+  'thanh-hoa': [
+    ['Thành nhà Hồ', 'culture', 'Khám phá di sản thành đá cổ'],
+    ['Biển Sầm Sơn', 'nature', 'Tản bộ và ngắm biển'],
+    ['Suối cá Cẩm Lương', 'nature', 'Tham quan dòng suối cá độc đáo']
+  ],
+  'vinh': [
+    ['Quảng trường Hồ Chí Minh', 'culture', 'Dạo quảng trường trung tâm thành phố'],
+    ['Biển Cửa Lò', 'nature', 'Thư giãn bên bờ biển Nghệ An'],
+    ['Chợ Vinh', 'food', 'Khám phá đặc sản xứ Nghệ']
+  ],
+  'dong-hoi': [
+    ['Động Phong Nha', 'nature', 'Khám phá hang động kỳ vĩ'],
+    ['Biển Nhật Lệ', 'nature', 'Ngắm biển ngay bên thành phố'],
+    ['Quảng Bình Quan', 'culture', 'Tham quan cổng thành cổ']
+  ],
+  'dong-ha': [
+    ['Địa đạo Vịnh Mốc', 'culture', 'Tìm hiểu di tích lịch sử dưới lòng đất'],
+    ['Cầu Hiền Lương - sông Bến Hải', 'culture', 'Ghé thăm địa danh lịch sử đôi bờ'],
+    ['Thánh địa La Vang', 'culture', 'Tham quan quần thể kiến trúc tôn giáo']
+  ],
+  'dong-nai': [
+    ['Vườn quốc gia Cát Tiên', 'nature', 'Khám phá rừng nhiệt đới và thiên nhiên'],
+    ['Khu du lịch Bửu Long', 'nature', 'Ngắm hồ nước và núi đá'],
+    ['Thác Giang Điền', 'nature', 'Dạo chơi bên dòng thác xanh mát']
+  ],
+  'tam-ky': [
+    ['Làng bích họa Tam Thanh', 'culture', 'Dạo làng chài với những bức tranh sắc màu'],
+    ['Hồ Phú Ninh', 'nature', 'Thư giãn giữa không gian hồ và rừng'],
+    ['Tượng đài Mẹ Việt Nam Anh hùng', 'culture', 'Tham quan công trình tưởng niệm']
+  ],
+  'quang-ngai': [
+    ['Đảo Lý Sơn', 'nature', 'Khám phá đảo núi lửa và biển xanh'],
+    ['Biển Mỹ Khê', 'nature', 'Thư giãn bên bờ biển Quảng Ngãi'],
+    ['Chứng tích Sơn Mỹ', 'culture', 'Tìm hiểu di tích lịch sử']
+  ]
+};
+
+const cityDescriptions = {
+  'da-lat': 'Một ngày thong thả giữa cao nguyên.',
+  'ha-noi': 'Khám phá nét cổ kính và nhịp sống Hà Nội.',
+  'ho-chi-minh': 'Ghé những biểu tượng giữa lòng Sài Gòn.',
+  'da-nang': 'Kết hợp biển xanh, núi đẹp và phố bên sông Hàn.',
+  'hue': 'Một ngày khám phá di sản và ẩm thực cố đô.'
+};
+const itineraryTimes = ['08:30', '11:00', '14:30', '17:00'];
+const destinationImages = {
+  nature: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=320&h=220&q=80',
+  culture: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=320&h=220&q=80',
+  food: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=320&h=220&q=80'
+};
+const categoryLabels = { nature: 'Thiên nhiên', culture: 'Văn hóa', food: 'Ẩm thực' };
+const defaultDaLatDestinations = destinations.map((destination, index) => ({
+  ...destination,
+  id: `da-lat-${index + 1}`
+}));
+
+function createCityDestinations(cityId) {
+  if (cityId === 'da-lat') {
+    return defaultDaLatDestinations.map((destination) => ({ ...destination }));
+  }
+
+  return cityRecommendations[cityId].map(([title, category, detail], index) => ({
+    id: `${cityId}-${index + 1}`,
+    title,
+    category,
+    categoryLabel: categoryLabels[category],
+    time: itineraryTimes[index] ?? '17:00',
+    detail,
+    image: destinationImages[category],
+    alt: `${title} tại ${weatherCities.find((city) => city.id === cityId).name}`
+  }));
+}
+
 const destinationList = document.querySelector('#destination-list');
 const searchInput = document.querySelector('#destination-search');
 const categoryFilter = document.querySelector('#category-filter');
@@ -176,6 +397,7 @@ const pageNumbers = document.querySelector('#page-numbers');
 const resultRange = document.querySelector('#result-range');
 const destinationCount = document.querySelector('#destination-count');
 const visitedDestinations = [];
+const cityItineraries = {};
 const plannedTab = document.querySelector('#planned-tab');
 const visitedTab = document.querySelector('#visited-tab');
 const plannedCount = document.querySelector('#planned-count');
@@ -187,6 +409,7 @@ const addDestinationFeedback = document.querySelector('#add-destination-feedback
 
 let currentPage = 1;
 let activeList = 'planned';
+let activeCityId = 'da-lat';
 let nextCustomDestinationId = 1;
 let pendingEntryId = null;
 
@@ -220,11 +443,14 @@ function isValidDestination(destination) {
 
 function saveStorage() {
   try {
+    cityItineraries[activeCityId] = {
+      destinations: [...destinations],
+      visitedDestinations: [...visitedDestinations]
+    };
     localStorage.setItem(storageKey, JSON.stringify({
-      version: 1,
+      version: 2,
       selectedCityId: weatherSelect.value,
-      destinations,
-      visitedDestinations
+      cityItineraries
     }));
   } catch (error) {
     console.warn('Không thể lưu lịch trình vào LocalStorage:', error);
@@ -234,29 +460,48 @@ function saveStorage() {
 function loadStorage() {
   try {
     const savedState = JSON.parse(localStorage.getItem(storageKey) ?? 'null');
-    if (!savedState || savedState.version !== 1) return;
+    if (!savedState || ![1, 2].includes(savedState.version)) return;
 
     if (weatherCities.some((city) => city.id === savedState.selectedCityId)) {
       weatherSelect.value = savedState.selectedCityId;
     }
 
-    if (Array.isArray(savedState.destinations) && savedState.destinations.every(isValidDestination)) {
-      const restoredDestinations = savedState.destinations.map((destination) => ({
-        ...destination,
-        visited: destination.visited === true
-      }));
-      destinations.splice(0, destinations.length, ...restoredDestinations.filter((destination) => !destination.visited));
-      visitedDestinations.splice(0, visitedDestinations.length, ...restoredDestinations.filter((destination) => destination.visited));
+    if (savedState.version === 2 && savedState.cityItineraries && typeof savedState.cityItineraries === 'object') {
+      Object.entries(savedState.cityItineraries).forEach(([cityId, itinerary]) => {
+        if (!weatherCities.some((city) => city.id === cityId)
+          || !Array.isArray(itinerary?.destinations)
+          || !Array.isArray(itinerary?.visitedDestinations)
+          || !itinerary.destinations.every(isValidDestination)
+          || !itinerary.visitedDestinations.every(isValidDestination)) {
+          return;
+        }
+
+        cityItineraries[cityId] = {
+          destinations: itinerary.destinations.map((destination) => ({ ...destination, visited: false })),
+          visitedDestinations: itinerary.visitedDestinations.map((destination) => ({ ...destination, visited: true }))
+        };
+      });
+    } else if (savedState.version === 1) {
+      const savedDestinations = Array.isArray(savedState.destinations) && savedState.destinations.every(isValidDestination)
+        ? savedState.destinations
+        : [];
+      const savedVisited = Array.isArray(savedState.visitedDestinations)
+        && savedState.visitedDestinations.every(isValidDestination)
+        ? savedState.visitedDestinations
+        : [];
+      cityItineraries[weatherSelect.value] = {
+        destinations: savedDestinations
+          .filter((destination) => destination.visited !== true)
+          .map((destination) => ({ ...destination, visited: false })),
+        visitedDestinations: [
+          ...savedDestinations.filter((destination) => destination.visited === true),
+          ...savedVisited
+        ].map((destination) => ({ ...destination, visited: true }))
+      };
     }
 
-    if (Array.isArray(savedState.visitedDestinations) && savedState.visitedDestinations.every(isValidDestination)) {
-      visitedDestinations.push(...savedState.visitedDestinations.map((destination) => ({
-        ...destination,
-        visited: true
-      })));
-    }
-
-    const customIds = [...destinations, ...visitedDestinations]
+    const customIds = Object.values(cityItineraries)
+      .flatMap((itinerary) => [...itinerary.destinations, ...itinerary.visitedDestinations])
       .map((destination) => /^custom-(\d+)$/.exec(destination.id ?? ''))
       .filter(Boolean)
       .map((match) => Number(match[1]));
@@ -264,6 +509,28 @@ function loadStorage() {
   } catch (error) {
     console.warn('Không thể đọc lịch trình từ LocalStorage:', error);
   }
+}
+
+function activateCityItinerary(cityId) {
+  const city = weatherCities.find((candidate) => candidate.id === cityId);
+  if (!city) return;
+
+  const itinerary = cityItineraries[cityId] ?? {
+    destinations: createCityDestinations(cityId),
+    visitedDestinations: []
+  };
+  activeCityId = cityId;
+  cityItineraries[cityId] = itinerary;
+  destinations.splice(0, destinations.length, ...itinerary.destinations);
+  visitedDestinations.splice(0, visitedDestinations.length, ...itinerary.visitedDestinations);
+  tripCityName.textContent = `${city.name}, VIỆT NAM`.toLocaleUpperCase('vi-VN');
+  itineraryDescription.textContent = cityDescriptions[cityId]
+    ?? `Gợi ý những điểm nổi bật không nên bỏ lỡ tại ${city.name}.`;
+  activeList = 'planned';
+  currentPage = 1;
+  searchInput.value = '';
+  categoryFilter.value = 'all';
+  renderUI();
 }
 
 function getWeatherDescription(code) {
@@ -411,6 +678,8 @@ async function loadWeatherForCities() {
 
 weatherSelect.addEventListener('change', () => {
   saveStorage();
+  activateCityItinerary(weatherSelect.value);
+  saveStorage();
   const selectedCity = weatherCities.find((city) => city.id === weatherSelect.value);
   if (selectedCity?.weather) {
     updateWeatherCard(selectedCity);
@@ -433,6 +702,10 @@ function getVisibleDestinations() {
       return matchesSearch && matchesCategory;
     })
     .sort((first, second) => {
+      if (titleSort.value === 'time') {
+        return first.time.localeCompare(second.time);
+      }
+
       const comparison = first.title.localeCompare(second.title, 'vi');
       return titleSort.value === 'asc' ? comparison : -comparison;
     });
@@ -681,5 +954,6 @@ nextPageButton.addEventListener('click', () => {
 
 populateCitySelect();
 loadStorage();
-renderUI();
+activateCityItinerary(weatherSelect.value);
+saveStorage();
 loadWeatherForCities();
